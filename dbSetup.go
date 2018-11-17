@@ -37,9 +37,13 @@ func main(){
 	fmt.Println("Password:")
 	dbPass, err := reader.ReadString('\n')
 	procErr(err)
+	fmt.Println("db Name")
+	dbName, err := reader.ReadString('\n')
+	procErr(err)
 	dbUser = strings.TrimSpace(dbUser)
+	dbName = strings.TrimSpace(dbName)
 	dbPass = strings.TrimSpace(dbPass)
-	userUser := fmt.Sprintf("%s:%s@/duckhelp",dbUser,dbPass)
+	userUser := fmt.Sprintf("%s:%s@/%s",dbUser,dbPass,dbName)
 
 	db,err := sql.Open("mysql",rootUser)
 	procErr(err)
@@ -61,7 +65,7 @@ func main(){
 	_,err = db.Query("CREATE TABLE thing(description TEXT NOT NULL,name TEXT NOT NULL, tag TEXT NOT NULL, cost FLOAT(10,2) DEFAULT 0.00, discount INT DEFAULT 0, loc NVARCHAR(200) NOT NULL,FOREIGN KEY(loc) REFERENCES place(name) );")
 	procErr(err)
 
-	confs := fmt.Sprintf("%s\n%s\n",dbUser,dbPass)
+	confs := fmt.Sprintf("%s\n%s\n%s\n",dbUser,dbPass,dbName)
 	fmt.Println(confs)
 	err = ioutil.WriteFile("./.dbconfig",[]byte(confs), 0644)
 	procErr(err)
