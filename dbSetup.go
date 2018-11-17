@@ -50,7 +50,7 @@ func main(){
 	procErr(err)
 	_,err = db.Query(fmt.Sprintf("GRANT ALL PRIVILEGES ON duckhelp.* TO %q@'localhost';",dbUser))
 	procErr(err)
-	_,err = db.Query("FLUSH PRIVILEGES")
+	_,err = db.Query("FLUSH PRIVILEGES;")
 	procErr(err)
 	db.Close()
 
