@@ -70,7 +70,7 @@
         var strLines = null;
         var obj = null;
         var objs = [];
-        $.get('service', function(data) {
+        $.get('service',{ tags : "blood"} , function(data) {
             //data is the JSON string
             //var obj = JSON.parse(data);
             str = data;
