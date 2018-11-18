@@ -132,7 +132,7 @@ func main(){
 	defer dbMaster.Close()
 	http.HandleFunc("/service", func(w http.ResponseWriter, r *http.Request){
 		for _,i := range serviceToJson(getServices(dbMaster,make([]string,0),"")){
-			fmt.Fprintf(w,"%s",i);
+			fmt.Fprintf(w,"%s\n",i);
 		}
 	})
 	http.Handle("/",http.FileServer(http.Dir("./frontend")))
