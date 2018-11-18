@@ -119,6 +119,7 @@ func main(){
 	dbConf,err := ioutil.ReadFile("./.dbconfig")
 	if err != nil {
 		fmt.Println("Could not read .dbconfig, try running dbSetup.go")
+		fmt.Println(err)
 		return
 	}
 	dbSplits := strings.Split(string(dbConf),"\n")
