@@ -36,10 +36,10 @@ function grabJSON(){
   .then(function(response) {
     var obj = JSON.parse(response.json());
     placeMarker(obj.address);
-    //return JSON.parse(response.json());
-})
-//   .then(function(myJson) {
-//     console.log(JSON.stringify(myJson));
-//   });
+    return obj;
+  })
+  .then(function(myJson) {
+    console.log(JSON.stringify(myJson));
+  });
 
 }
