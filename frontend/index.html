@@ -63,9 +63,10 @@
         placeMarker(marker2);
         //placeMarker(marker3);
         
-        var jsonObj = JSON.parse(grabJSON());
-        
-        placeMarker(jsonObj.Address);
+        var json = grabJSON();
+        var obj = JSON.parse(json);
+
+        placeMarker(obj);
       </script>
   </body>
 </html>
