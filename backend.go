@@ -131,7 +131,9 @@ func main(){
 	}
 	defer dbMaster.Close()
 	http.HandleFunc("/service", func(w http.ResponseWriter, r *http.Request){
-		for _,i := range serviceToJson(getServices(dbMaster,make([]string,0),"")){
+		r.ParseForm()
+		tags := r.Form["tags"]
+		for _,i := range serviceToJson(getServices(dbMaster,tags,"")){
 			fmt.Fprintf(w,"%s\n",i);
 		}
 	})
