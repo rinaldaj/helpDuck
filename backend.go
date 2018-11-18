@@ -67,7 +67,7 @@ func getServices(db *sql.DB,tags []string, loc string) (ret []service){
 			query = fmt.Sprintf("%s AND tag LIKE '%%%s%%'",query,tag)
 			where= true
 		} else {
-			query = fmt.Sprintf("%s OR tag LIKE '%%%s%%'",query,tag)
+			query = fmt.Sprintf("%s AND tag LIKE '%%%s%%'",query,tag)
 		}
 	}
 	if loc == ""{
