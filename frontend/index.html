@@ -66,9 +66,28 @@
         
         // var obj = grabJSON();
         //console.log(obj.Address);
+        var str = null;
+        var strLines = null;
+        var obj = null;
+        var objs = null;
         $.get('http://35.227.91.78/service', function(data) {
             //data is the JSON string
             //var obj = JSON.parse(data);
+            str = data;
+            strLines = str.split("}");
+            for (var i in strLines) {
+                i = i + "}";
+            }
+            for (var j in strLines) {
+                obj = JSON.parse(strLines[j]);
+                objs.push(obj);
+                console.log(obj.Address);
+            }
+            for (var k in objs) {
+                placeMarker(objs[k]);
+                console.log(objs[k].Address);
+            }
+
             console.log(data);
             // console.log(data.Address);
             // placeMarker(data.Address);
