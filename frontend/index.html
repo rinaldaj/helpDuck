@@ -22,6 +22,7 @@
       href="http://js.api.here.com/v3/3.0/mapsjs-ui.css" />
     <script type="text/javascript" src="https://js.api.here.com/v3/3.0/mapsjs-mapevents.js"></script>
     <script type="text/javascript" src="https://js.api.here.com/v3/3.0/mapsjs-service.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
   </head>
   <body>
@@ -55,16 +56,24 @@
         // Create the default UI:
         var ui = H.ui.UI.createDefault(map, defaultLayers);
         
-        var marker1 = '1435 Guy St, Montreal, QC';
-        var marker2 = 'Montreal, QC';
-        var marker3 = '10 Clarkson Ave, Potsdam, NY';
+        // var marker1 = '1435 Guy St, Montreal, QC';
+        // var marker2 = 'Montreal, QC';
+        // var marker3 = '10 Clarkson Ave, Potsdam, NY';
 
-        placeMarker(marker1);
-        placeMarker(marker2);
-        //placeMarker(marker3);
+        // placeMarker(marker1);
+        // placeMarker(marker2);
+        // //placeMarker(marker3);
         
-        var obj = grabJSON();
-        console.log(obj.Address);
+        // var obj = grabJSON();
+        //console.log(obj.Address);
+        $.getJSON('http://35.227.91.78/service', function(data) {
+            //data is the JSON string
+            //var obj = JSON.parse(data);
+            console.log(data);
+            console.log(data.Address);
+            placeMarker(data.Address);
+        });
+
       </script>
   </body>
 </html>
