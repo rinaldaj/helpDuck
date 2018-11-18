@@ -82,6 +82,8 @@
                 strLines[i] = strLines[i] + "}";
                 console.log(strLines[i]);
             }
+            var len = strLines.length();
+            strLines.splice(len,1);
             for (var j in strLines) {
                 obj = JSON.parse(strLines[j]);
                 objs.push(obj);
