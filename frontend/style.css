@@ -1,0 +1,39 @@
+.titlebar {
+    position: absolute;
+    width: 1280px;
+    height: 55px;
+    left: 0px;
+    top: 0px;
+
+    background: #FFDE31;
+    box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.25);
+}
+
+.filterbar {
+    position: absolute;
+    width: 22%;
+    height: 86%;
+    left: 15px;
+    top: 72px;
+
+    background: #FFDE31;
+    box-shadow: 4px 6px 10px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+}
+
+.map {
+    position: absolute;
+    width: 73.5%;
+    height: 86%;
+    /* right: 15px; */
+    left: 25%;
+    top: 72px;
+
+    background: white;
+    box-shadow: 4px 6px 10px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+}
+
+body {
+    background: #D7B500;
+}
