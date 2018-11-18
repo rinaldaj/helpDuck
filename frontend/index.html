@@ -76,7 +76,7 @@
             str = data;
             strLines = str.split("}");
             for (var i in strLines) {
-                i = i + "}";
+                strLines[i] = strLines[i] + "}";
             }
             for (var j in strLines) {
                 obj = JSON.parse(strLines[j]);
