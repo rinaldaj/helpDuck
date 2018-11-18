@@ -68,9 +68,10 @@
         //console.log(obj.Address);
         $.getJSON('http://35.227.91.78/service', function(data) {
             //data is the JSON string
-            var obj = JSON.parse(data);
-            console.log(obj.Address);
-            placeMarker(obj.Address);
+            //var obj = JSON.parse(data);
+            console.log(data);
+            console.log(data.Address);
+            //placeMarker(obj.Address);
         });
 
       </script>
