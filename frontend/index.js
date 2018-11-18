@@ -34,7 +34,7 @@ function placeMarker(address){
 function grabJSON(){
     fetch('http://35.227.91.78/service')
   .then(function(response) {
-    var obj = JSON.parse(response.json());
+    var obj = JSON.parse(response);
     placeMarker(obj.Address);
     return obj;
   })
