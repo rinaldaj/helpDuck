@@ -19,6 +19,7 @@ type service struct{
 	Description	string
 	PlaceName	string
 	Loc	string
+	Address	string
 }
 
 type place struct{
@@ -30,7 +31,7 @@ type place struct{
 var dbMaster *sql.DB
 
 func serviceFeilds() string{
-	return "description,name,tag,cost,discount,loc"
+	return "t.description,t.name,t.tag,t.cost,t.discount,t.loc,p.location"
 }
 
 func locationFeilds() string{
@@ -40,7 +41,7 @@ func locationFeilds() string{
 func processServices(res *sql.Rows) (ret []service){
 	for res.Next(){
 		var cur service
-		if err := res.Scan(&cur.Description,&cur.Name,&cur.Tag,&cur.Cost,&cur.Discount,&cur.Loc); err != nil{
+		if err := res.Scan(&cur.Description,&cur.Name,&cur.Tag,&cur.Cost,&cur.Discount,&cur.Loc,&cur.Address); err != nil{
 			continue
 		}
 		ret = append(ret,cur)
@@ -61,11 +62,11 @@ func processPlaces(res *sql.Rows) (ret []place){
 }
 
 func getServices(db *sql.DB,tags []string, loc string) (ret []service){
-	query := fmt.Sprintf("SELECT %s FROM thing",serviceFeilds());
+	query := fmt.Sprintf("SELECT %s FROM thing t,place p WHERE p.name = t.loc",serviceFeilds());
 	where := false
 	for _,tag := range tags{
 		if !where {
-			query = fmt.Sprintf("%s WHERE tag LIKE '%%%s%%'",query,tag)
+			query = fmt.Sprintf("%s AND tag LIKE '%%%s%%'",query,tag)
 			where= true
 		} else {
 			query = fmt.Sprintf("%s OR tag LIKE '%%%s%%'",query,tag)
@@ -74,9 +75,9 @@ func getServices(db *sql.DB,tags []string, loc string) (ret []service){
 	if loc == ""{
 		query = fmt.Sprintf("%s;",query)
 	} else if !where {
-		query = fmt.Sprintf("%s WHERE loc LIKE '%%%s%%';",query,loc)
+		query = fmt.Sprintf("%s AND loc LIKE '%%%s%%';",query,loc)
 	} else {
-		query = fmt.Sprintf("%s;",query)
+		query = fmt.Sprintf("%s OR t.loc LIKE '%%%s%%';",query,loc)
 	}
 	results,err := db.Query(query)
 	if err != nil{
@@ -137,9 +138,10 @@ func main(){
 		return
 	}
 	defer dbMaster.Close()
+	res := getServices(dbMaster,[]string{"fish"},"")
 	http.Handle("/",http.FileServer(http.Dir("./frontend")))
 	fmt.Printf("Listening on Port %s\n",port)
-	for _,i := range placeToJson(getPlaces(dbMaster)){
+	for _,i := range serviceToJson(res){
 		fmt.Printf("%s\n",i)
 	}
 	fmt.Println(http.ListenAndServe(port,nil))
