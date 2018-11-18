@@ -66,12 +66,12 @@
         
         // var obj = grabJSON();
         //console.log(obj.Address);
-        $.getJSON('http://35.227.91.78/service', function(data) {
+        $.get('http://35.227.91.78/service', function(data) {
             //data is the JSON string
             //var obj = JSON.parse(data);
             console.log(data);
-            console.log(data.Address);
-            placeMarker(data.Address);
+            // console.log(data.Address);
+            // placeMarker(data.Address);
         });
 
       </script>
