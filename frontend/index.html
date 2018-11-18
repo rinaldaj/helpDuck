@@ -76,6 +76,9 @@
             str = data;
             strLines = str.split("}");
             for (var i in strLines) {
+                if(strLines[i]==""){
+                    break;
+                }
                 strLines[i] = strLines[i] + "}";
                 console.log(strLines[i]);
             }
