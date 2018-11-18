@@ -5,8 +5,7 @@
     left: 0px;
     top: 0px;
 
-    background: #FFDE31;
-    box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.25);
+    background: linear-gradient(180deg, #FFE86F 0%, #FFF3B3 100%);
 }
 
 .filterbar {
@@ -16,24 +15,31 @@
     left: 15px;
     top: 72px;
 
-    background: #FFDE31;
-    box-shadow: 4px 6px 10px rgba(0, 0, 0, 0.25);
-    border-radius: 10px;
+    background: #FFFDF3;
+    box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.25);
+    /* box-shadow: inset 0px 1px 10px rgba(0, 0, 0, 0.25); */
+    /* border-radius: 10px; */
 }
 
 .map {
     position: absolute;
     width: 73.5%;
     height: 86%;
-    /* right: 15px; */
     left: 25%;
     top: 72px;
 
     background: white;
-    box-shadow: 4px 6px 10px rgba(0, 0, 0, 0.25);
+    /* box-shadow: inset 0px 1px 10px rgba(0, 0, 0, 0.25); */
     border-radius: 10px;
+
+    box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.25);
 }
 
 body {
-    background: #D7B500;
+    /* height: 100vh;
+    width: 100vw;
+    right: 0px;
+    bottom: 0px; */
+    /* background: linear-gradient(180deg, #FFFFFF 0%, #FFF2AD 100%); */
+    background: white;
 }

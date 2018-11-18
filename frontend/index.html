@@ -3,11 +3,67 @@
   <head>
     <meta charset="UTF-8">
     <title>HelpDuck</title>
-  <link rel="stylesheet" href="style.css" type="text/css">
+    <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+    <script src="index.js" type="text/javascript" charset="utf-8"></script>
+    <script src="http://js.api.here.com/v3/3.0/mapsjs-core.js"
+    type="text/javascript" charset="utf-8"></script>
+    <script src="http://js.api.here.com/v3/3.0/mapsjs-service.js"
+    type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <meta name="viewport" content="initial-scale=1.0, 
+      width=device-width" />
+    <script src="http://js.api.here.com/v3/3.0/mapsjs-core.js" 
+      type="text/javascript" charset="utf-8"></script>
+    <script src="http://js.api.here.com/v3/3.0/mapsjs-service.js" 
+      type="text/javascript" charset="utf-8"></script>
+    <script src="http://js.api.here.com/v3/3.0/mapsjs-ui.js" 
+      type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" type="text/css" 
+      href="http://js.api.here.com/v3/3.0/mapsjs-ui.css" />
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.0/mapsjs-mapevents.js"></script>
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.0/mapsjs-service.js"></script>
+
   </head>
   <body>
     <div class="titlebar"></div>
     <div class="filterbar"></div>
-    <div class="map"></div>
+    <div class="mapOuter"><div class="map" id="mapContainer"></div></div>
+    <script type="text/javascript" charset="utf-8">
+        //Initialize the Platform object:
+        var platform = new H.service.Platform({
+          'app_id': 'zXImiYR6L0OngZUCGUQg',
+          'app_code': 'Xt5ZmbVCm7rQgjjiysEnDg'
+        });
+      
+        // Get the default map types from the Platform object:
+        var defaultLayers = platform.createDefaultLayers();
+      
+        // Instantiate the map:
+        var map = new H.Map(
+          document.getElementById('mapContainer'),
+          defaultLayers.normal.map,
+          {
+            zoom: 10,
+            center: { lng: -73.5673, lat: 45.5017 }
+          });
+        
+        //Makes the map interactive
+        // MapEvents enables the event system
+        // Behavior implements default interactions for pan/zoom (also on mobile touch environments)
+        var behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
+        
+        // Create the default UI:
+        var ui = H.ui.UI.createDefault(map, defaultLayers);
+        
+        var marker1 = '1435 Guy St, Montreal, QC';
+        var marker2 = 'Montreal, QC';
+        var marker3 = '10 Clarkson Ave, Potsdam, NY';
+
+        placeMarker(marker1);
+        placeMarker(marker2);
+        placeMarker(marker3);
+        
+
+      </script>
   </body>
 </html>
