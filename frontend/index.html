@@ -66,12 +66,38 @@
         
         // var obj = grabJSON();
         //console.log(obj.Address);
-        $.getJSON('http://35.227.91.78/service', function(data) {
+        var str = null;
+        var strLines = null;
+        var obj = null;
+        var objs = [];
+        $.get('http://35.227.91.78/service', { tags: "[blood]" }, function(data) {
             //data is the JSON string
             //var obj = JSON.parse(data);
-            console.log(data);
-            console.log(data.Address);
-            placeMarker(data.Address);
+            str = data;
+            strLines = str.split("}");
+            for (var i in strLines) {
+                if(strLines[i]==""){
+                    break;
+                }
+                strLines[i] = strLines[i] + "}";
+                console.log(strLines[i]);
+            }
+            for (var j in strLines) {
+                if(strLines[j]==""){
+                    break;
+                }
+                obj = JSON.parse(strLines[j]);
+                objs.push(obj);
+                console.log(obj.Address);
+            }
+            for (var k in objs) {
+                placeMarker(objs[k].Address);
+                console.log(objs[k].Address);
+            }
+
+            //console.log(data);
+            // console.log(data.Address);
+            // placeMarker(data.Address);
         });
 
       </script>
