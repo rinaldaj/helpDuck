@@ -31,13 +31,14 @@ function placeMarker(address){
     });
 }
 
-function grabJSON(){
-    fetch('http://35.227.91.78/service')
-  .then(function(response) {
-    return JSON.parse(response.json());
-  })
-  .then(function(myJson) {
-    console.log(JSON.stringify(myJson));
-  });
+// function grabJSON(){
+//     fetch('http://35.227.91.78/service')
+//   .then(function(response) {
+//     return JSON.parse(response.json());
+//   })
+//   .then(function(myJson) {
+//     console.log(JSON.stringify(myJson));
+//   });
 
-}
+// }
+
