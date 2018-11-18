@@ -18,14 +18,12 @@ type service struct{
 	Discount	int
 	Description	string
 	PlaceName	string
-	Loc	string
 	Address	string
 }
 
 type place struct{
 	Name	string
 	Location	string
-	Services	[]service
 }
 
 var dbMaster *sql.DB
@@ -41,7 +39,7 @@ func locationFeilds() string{
 func processServices(res *sql.Rows) (ret []service){
 	for res.Next(){
 		var cur service
-		if err := res.Scan(&cur.Description,&cur.Name,&cur.Tag,&cur.Cost,&cur.Discount,&cur.Loc,&cur.Address); err != nil{
+		if err := res.Scan(&cur.Description,&cur.Name,&cur.Tag,&cur.Cost,&cur.Discount,&cur.PlaceName,&cur.Address); err != nil{
 			continue
 		}
 		ret = append(ret,cur)
@@ -74,10 +72,8 @@ func getServices(db *sql.DB,tags []string, loc string) (ret []service){
 	}
 	if loc == ""{
 		query = fmt.Sprintf("%s;",query)
-	} else if !where {
+	} else  {
 		query = fmt.Sprintf("%s AND loc LIKE '%%%s%%';",query,loc)
-	} else {
-		query = fmt.Sprintf("%s OR t.loc LIKE '%%%s%%';",query,loc)
 	}
 	results,err := db.Query(query)
 	if err != nil{
@@ -94,12 +90,7 @@ func getPlaces(db *sql.DB) (ret []place){
 		fmt.Println(err)
 		return
 	}
-	mid := processPlaces(res)
-	for _,i := range mid{
-		i.Services = getServices(db,make([]string,0),i.Name)
-		ret = append(ret,i)
-	}
-	return
+	return processPlaces(res)
 }
 
 func serviceToJson(services []service) (ret [][]byte){
@@ -138,11 +129,12 @@ func main(){
 		return
 	}
 	defer dbMaster.Close()
-	res := getServices(dbMaster,[]string{"fish"},"")
+	http.HandleFunc("/service", func(w http.ResponseWriter, r *http.Request){
+		for _,i := range serviceToJson(getServices(dbMaster,make([]string,0),"")){
+			fmt.Fprintf(w,"%s",i);
+		}
+	})
 	http.Handle("/",http.FileServer(http.Dir("./frontend")))
 	fmt.Printf("Listening on Port %s\n",port)
-	for _,i := range serviceToJson(res){
-		fmt.Printf("%s\n",i)
-	}
 	fmt.Println(http.ListenAndServe(port,nil))
 }
