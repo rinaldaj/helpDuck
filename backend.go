@@ -7,6 +7,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"io/ioutil"
 	"strings"
+	"encoding/json"
 )
 
 
@@ -86,9 +87,10 @@ func getServices(db *sql.DB,tags []string, loc string) (ret []service){
 
 
 func getPlaces(db *sql.DB) (ret []place){
-	query := fmt.Sprintf("SELECT %s FROM places;",locationFeilds())
+	query := fmt.Sprintf("SELECT %s FROM place;",locationFeilds())
 	res,err := db.Query(query)
 	if err != nil {
+		fmt.Println(err)
 		return
 	}
 	mid := processPlaces(res)
@@ -98,6 +100,28 @@ func getPlaces(db *sql.DB) (ret []place){
 	}
 	return
 }
+
+func serviceToJson(services []service) (ret [][]byte){
+	for _,i := range services{
+		tmp,err := json.Marshal(i)
+		if err != nil {
+			continue
+		}
+		ret = append(ret,tmp)
+	}
+	return ret;
+}
+func placeToJson(services []place) (ret [][]byte){
+	for _,i := range services{
+		tmp,err := json.Marshal(i)
+		if err != nil {
+			continue
+		}
+		ret = append(ret,tmp)
+	}
+	return ret;
+}
+
 
 func main(){
 	dbConf,err := ioutil.ReadFile("./.dbconfig")
@@ -109,16 +133,14 @@ func main(){
 	dbUser := fmt.Sprintf("%s:%s@/%s",dbSplits[0],dbSplits[1],dbSplits[2])
 	port := ":8080"
 	dbMaster,err = sql.Open("mysql",dbUser)
-	var tester []string
-	tester = make([]string,0)
-	res := getServices(dbMaster,tester,"GodBox")
 	if err != nil {
 		return
 	}
+	defer dbMaster.Close()
 	http.Handle("/",http.FileServer(http.Dir("./frontend")))
 	fmt.Printf("Listening on Port %s\n",port)
-	for _,i := range res {
-		fmt.Printf("%s\n",i.Name)
+	for _,i := range placeToJson(getPlaces(dbMaster)){
+		fmt.Printf("%s\n",i)
 	}
 	fmt.Println(http.ListenAndServe(port,nil))
 }
