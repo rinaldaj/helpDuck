@@ -34,10 +34,12 @@ function placeMarker(address){
 function grabJSON(){
     fetch('http://35.227.91.78/service')
   .then(function(response) {
-    return JSON.parse(response.json());
-  })
-  .then(function(myJson) {
-    console.log(JSON.stringify(myJson));
-  });
+    var obj = JSON.parse(response.json());
+    placeMarker(obj.address);
+    //return JSON.parse(response.json());
+})
+//   .then(function(myJson) {
+//     console.log(JSON.stringify(myJson));
+//   });
 
 }
