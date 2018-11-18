@@ -20,10 +20,20 @@ type service struct{
 	Loc	string
 }
 
+type place struct{
+	Name	string
+	Location	string
+	Services	[]service
+}
+
 var dbMaster *sql.DB
 
-func standardFeilds() string{
+func serviceFeilds() string{
 	return "description,name,tag,cost,discount,loc"
+}
+
+func locationFeilds() string{
+	return "location,name"
 }
 
 func processServices(res *sql.Rows) (ret []service){
@@ -37,9 +47,20 @@ func processServices(res *sql.Rows) (ret []service){
 	return
 
 }
+func processPlaces(res *sql.Rows) (ret []place){
+	for res.Next(){
+		var cur place
+		if err := res.Scan(&cur.Location,&cur.Name,); err != nil{
+			continue
+		}
+		ret = append(ret,cur)
+	}
+	return
+
+}
 
 func getServices(db *sql.DB,tags []string, loc string) (ret []service){
-	query := fmt.Sprintf("SELECT %s FROM thing",standardFeilds());
+	query := fmt.Sprintf("SELECT %s FROM thing",serviceFeilds());
 	where := false
 	for _,tag := range tags{
 		if !where {
@@ -63,8 +84,22 @@ func getServices(db *sql.DB,tags []string, loc string) (ret []service){
 	return processServices(results)
 }
 
+
+func getPlaces(db *sql.DB) (ret []place){
+	query := fmt.Sprintf("SELECT %s FROM places;",locationFeilds())
+	res,err := db.Query(query)
+	if err != nil {
+		return
+	}
+	mid := processPlaces(res)
+	for _,i := range mid{
+		i.Services = getServices(db,make([]string,0),i.Name)
+		ret = append(ret,i)
+	}
+	return
+}
+
 func main(){
-	//TODO: read configuration file
 	dbConf,err := ioutil.ReadFile("./.dbconfig")
 	if err != nil {
 		fmt.Println("Could not read .dbconfig, try running dbSetup.go")
@@ -74,14 +109,16 @@ func main(){
 	dbUser := fmt.Sprintf("%s:%s@/%s",dbSplits[0],dbSplits[1],dbSplits[2])
 	port := ":8080"
 	dbMaster,err = sql.Open("mysql",dbUser)
-	res := getServices(dbMaster,make([]string,0),"")
+	var tester []string
+	tester = make([]string,0)
+	res := getServices(dbMaster,tester,"GodBox")
 	if err != nil {
 		return
 	}
 	http.Handle("/",http.FileServer(http.Dir("./frontend")))
 	fmt.Printf("Listening on Port %s\n",port)
 	for _,i := range res {
-		fmt.Printf("%s",i.Name)
+		fmt.Printf("%s\n",i.Name)
 	}
 	fmt.Println(http.ListenAndServe(port,nil))
 }
